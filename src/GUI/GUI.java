@@ -4,17 +4,26 @@
  */
 package GUI;
 
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author isaac
  */
 public class GUI extends javax.swing.JFrame {
-
+ private Clip clip;
+private final JFileChooser fileChooser = new JFileChooser();
     /**
      * Creates new form GUI
      */
     public GUI() {
         initComponents();
+       
     }
 
     /**
@@ -27,18 +36,22 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -84,13 +97,41 @@ public class GUI extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUI().setVisible(true);
             }
         });
     }
+    
+public void cargarSonido() {
+    int resultado = fileChooser.showOpenDialog(null);
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+        File archivoSonido = fileChooser.getSelectedFile();
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Puedes quitar esto también si no quieres ver errores en consola
+        }
+    }
+}
 
+public void reproducir() {
+    if (clip != null) {
+        clip.setFramePosition(0); // Reiniciar desde el inicio
+        clip.start();
+    }
+}
+
+public void detener() {
+    if (clip != null && clip.isRunning()) {
+        clip.stop();
+    }
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

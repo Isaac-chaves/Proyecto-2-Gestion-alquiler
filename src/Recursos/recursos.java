@@ -8,6 +8,6 @@ package Recursos;
  *
  * @author isaac
  */
-public class sonidos {
+public class recursos {
     
 }
