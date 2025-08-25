@@ -36,7 +36,8 @@ public static boolean crear(String cedula, String tipo, LocalDate inicio, LocalD
 
 public static boolean modificar(String id, String nuevaPlaca) {
     Reserva r = buscarPorId(id);
-       if (r == null || !r.getEstado().equals("Pendiente")) return false;
+       if (r == null || !r.getEstado().equals("Pendiente")) 
+           return false;
         
       try { VehiculosHashMap.buscarVehiculo(nuevaPlaca); } 
         catch (NoSuchElementException e) {

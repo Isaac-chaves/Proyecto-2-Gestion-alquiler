@@ -16,14 +16,13 @@ public class Empleado extends Persona {
     private String puesto;
     private double salario;
 
-
-    public Empleado(String cedula, String nombre, LocalDate fechaNacimiento,String telefono, String correo, String puesto, double salario) {
-        super(cedula, nombre, fechaNacimiento, telefono, correo);
+ public Empleado(String cedula, String nombre, LocalDate fechaNacimiento,String telefono, String correo, String puesto, double salario) {
+     super(cedula, nombre, fechaNacimiento, telefono, correo);
         this.puesto = puesto;
         this.salario = salario;
     }
 
-    public static ArrayList<Empleado> getEmpleados() {
+public static ArrayList<Empleado> getEmpleados() {
         return empleados;
     }
 
@@ -39,25 +38,23 @@ public class Empleado extends Persona {
     public void setPuesto(String puesto) {
         this.puesto = puesto;
     }
-
-    public boolean agregarEmpleado(String cedula, String nombre, String fechaNacimientoStr,String telefono, String correo, String puesto, double salario) {
-        
+    
+public boolean agregarEmpleado(String cedula, String nombre, String fechaNacimientoStr,String telefono, String correo, String puesto, double salario) { 
         for(Empleado emp : empleados) {
              if(emp.getCedula().equals(cedula)) {
            return false;
            }
        }
        
-        if (!correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+       if (!correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             return false;
         }
       
-        if (!telefono.matches("^\\d{8}$")) {
+      if (!telefono.matches("^\\d{8}$")) {
             return false;
-        }
-        try {
+        }try {
            
-   LocalDate fechaNacimiento = UtilDate.toLocalDate(fechaNacimientoStr);
+LocalDate fechaNacimiento = UtilDate.toLocalDate(fechaNacimientoStr);
          if (!UtilDate.isLegalAge(fechaNacimiento)) {
                return false;
            }
@@ -66,8 +63,8 @@ public class Empleado extends Persona {
             }
             
   
-   Empleado empleado = new Empleado(cedula, nombre, fechaNacimiento, telefono, correo, puesto, salario);
-        empleados.add(empleado);
+Empleado empleado = new Empleado(cedula, nombre, fechaNacimiento, telefono, correo, puesto, salario);
+      empleados.add(empleado);
           return true;
             
   } catch (Exception e) {
@@ -76,8 +73,8 @@ public class Empleado extends Persona {
     }
    
    
-    public boolean eliminarEmpleado(String cedula) {
-      for (int i = 0; i < empleados.size(); i++) {
+public boolean eliminarEmpleado(String cedula) {
+    for (int i = 0; i < empleados.size(); i++) {
           if (empleados.get(i).getCedula().equals(cedula)) {
                 empleados.remove(i);
          return true;
@@ -86,8 +83,8 @@ public class Empleado extends Persona {
         return false;
     }
   
-  public Empleado buscarEmpleado(String cedula) {
-       for (Empleado emp : empleados) {
+public Empleado buscarEmpleado(String cedula) {
+     for (Empleado emp : empleados) {
            if (emp.getCedula().equals(cedula)) {
                  return emp;
             }
