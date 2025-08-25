@@ -5,24 +5,37 @@
 package Sonidos;
 
 import java.io.File;
+import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
  * @author isaac
  */
-public class Reproducirsonidos {
+import javax.sound.sampled.*;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class ReproductorAudio {
     private Clip clip;
 
-    public void cargarSonido(String ruta) {
+    public ReproductorAudio(String rutaRelativa) {
         try {
-            File archivoSonido = new File(ruta);
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
+            InputStream is = getClass().getResourceAsStream(rutaRelativa);
+            if (is == null) {
+                System.out.println("Archivo no encontrado en recursos: " + rutaRelativa);
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(is);
             clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
+            clip.open(audioStream);
         } catch (Exception e) {
+            System.out.println("Error al cargar el audio: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -39,5 +52,5 @@ public class Reproducirsonidos {
             clip.stop();
         }
     }
-}  
+}
 
