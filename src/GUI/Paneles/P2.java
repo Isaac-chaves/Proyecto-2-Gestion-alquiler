@@ -4,6 +4,14 @@
  */
 package GUI.Paneles;
 
+import Gestion_Contratos.ContratoAlquiler;
+import Gestion_Reservas.Reserva;
+import Gestion_Reservas.ReservaMetodos;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author isaac
@@ -15,8 +23,47 @@ public class P2 extends javax.swing.JPanel {
      */
     public P2() {
         initComponents();
+        cargarTablas();
     }
 
+    
+    
+    
+ private void cargarTablas() {
+    DefaultTableModel modeloReservas = (DefaultTableModel) Tablareserva.getModel();
+    modeloReservas.setRowCount(0);
+    List<Reserva> reservas = ReservaMetodos.getReservas();
+    for (Reserva r : reservas) {
+        Object[] fila = new Object[] {
+            r.getId(),
+            r.getClienteCedula(),
+            r.getVehiculoPlaca(),
+            r.getInicio().toString(),
+            r.getFin().toString(),
+            r.getEstado()
+        };
+        modeloReservas.addRow(fila);
+    }
+    DefaultTableModel modeloContratos = (DefaultTableModel) TablaCont.getModel();
+    modeloContratos.setRowCount(0);
+    ArrayList<ContratoAlquiler> contratos = ContratoAlquiler.getContratos();
+    for (ContratoAlquiler c : contratos) {
+        Object[] fila = new Object[] {
+            c.getNumeroContrato(),
+            c.getCliente().getCedula(),
+            c.getVehiculo().getPlaca(),
+            c.getFechaInicio().toString(),
+            c.getFechaFin().toString(),
+            c.getMonto(),
+            c.getEstado()
+        };
+        modeloContratos.addRow(fila);
+    }
+}
+
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,13 +77,18 @@ public class P2 extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablaCont = new javax.swing.JTable();
+        BuscarContractos = new javax.swing.JTextField();
+        txtSeleccionadoContratos = new javax.swing.JTextField();
+        btnEditarContrato = new javax.swing.JButton();
+        btnNuevoContrato = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        Tablareserva = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
+        btnBuscarReserva = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(870, 473));
 
@@ -45,72 +97,163 @@ public class P2 extends javax.swing.JPanel {
 
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(840, 440));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablaCont.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Cliente", "Vehiculo", "Inicio", "Finalizacion", "Monto", "Estado"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        TablaCont.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(TablaCont);
+        if (TablaCont.getColumnModel().getColumnCount() > 0) {
+            TablaCont.getColumnModel().getColumn(0).setResizable(false);
+            TablaCont.getColumnModel().getColumn(1).setResizable(false);
+            TablaCont.getColumnModel().getColumn(2).setResizable(false);
+            TablaCont.getColumnModel().getColumn(3).setResizable(false);
+            TablaCont.getColumnModel().getColumn(4).setResizable(false);
+            TablaCont.getColumnModel().getColumn(5).setResizable(false);
+            TablaCont.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        BuscarContractos.setText("Buscar :");
+        BuscarContractos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarContractosActionPerformed(evt);
+            }
+        });
+
+        txtSeleccionadoContratos.setEditable(false);
+        txtSeleccionadoContratos.setText("Seleccionado :");
+        txtSeleccionadoContratos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSeleccionadoContratosActionPerformed(evt);
+            }
+        });
+
+        btnEditarContrato.setText("Editar");
+        btnEditarContrato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarContratoActionPerformed(evt);
+            }
+        });
+
+        btnNuevoContrato.setText("Nuevo Contrato");
+        btnNuevoContrato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoContratoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(345, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BuscarContractos)
+                    .addComponent(txtSeleccionadoContratos)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnEditarContrato)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addComponent(btnNuevoContrato)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(BuscarContractos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSeleccionadoContratos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditarContrato)
+                    .addComponent(btnNuevoContrato))
+                .addGap(26, 26, 26))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Contratos", jPanel3);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        Tablareserva.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Cliente", "Vehiculo", "Inicio ", "Final", "Estado"
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
 
-        jButton3.setText("jButton3");
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        Tablareserva.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(Tablareserva);
+        if (Tablareserva.getColumnModel().getColumnCount() > 0) {
+            Tablareserva.getColumnModel().getColumn(0).setResizable(false);
+            Tablareserva.getColumnModel().getColumn(1).setResizable(false);
+            Tablareserva.getColumnModel().getColumn(2).setResizable(false);
+            Tablareserva.getColumnModel().getColumn(3).setResizable(false);
+            Tablareserva.getColumnModel().getColumn(4).setResizable(false);
+            Tablareserva.getColumnModel().getColumn(5).setResizable(false);
+        }
 
-        jButton4.setText("jButton4");
+        jButton3.setText("Eliminar");
 
-        jTextField1.setText("jTextField1");
+        jButton4.setText("Nueva Reserva");
+
+        jTextField1.setEditable(false);
+        jTextField1.setText("Seleccionado :");
+
+        btnBuscarReserva.setText("Buscar :");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(18, 18, 18)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton3)
-                        .addGap(0, 16, Short.MAX_VALUE))
-                    .addComponent(jTextField1))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 613, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4))
+                    .addComponent(btnBuscarReserva))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,12 +261,14 @@ public class P2 extends javax.swing.JPanel {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(btnBuscarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4)
+                    .addComponent(jButton3))
                 .addGap(22, 22, 22))
         );
 
@@ -133,22 +278,24 @@ public class P2 extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 858, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,8 +303,39 @@ public class P2 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    
+    private void txtSeleccionadoContratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSeleccionadoContratosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSeleccionadoContratosActionPerformed
+
+    private void BuscarContractosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarContractosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BuscarContractosActionPerformed
+
+    private void btnEditarContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarContratoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarContratoActionPerformed
+
+    private void btnNuevoContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoContratoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNuevoContratoActionPerformed
+// Reservas botones y textos
+    
+    
+    
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField BuscarContractos;
+    private javax.swing.JTable TablaCont;
+    private javax.swing.JTable Tablareserva;
+    private javax.swing.JTextField btnBuscarReserva;
+    private javax.swing.JButton btnEditarContrato;
+    private javax.swing.JButton btnNuevoContrato;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
@@ -166,8 +344,7 @@ public class P2 extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtSeleccionadoContratos;
     // End of variables declaration//GEN-END:variables
 }

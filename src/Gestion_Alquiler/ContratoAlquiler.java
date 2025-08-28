@@ -13,6 +13,7 @@ import java.util.UUID;
 
 public class ContratoAlquiler {
 
+   
     private String numeroContrato;
     private Cliente cliente;
     private Vehiculo vehiculo;
@@ -22,6 +23,12 @@ public class ContratoAlquiler {
     private String estado; // Activo, Finalizado, Cancelado
 
     private static ArrayList<ContratoAlquiler> contratos = new ArrayList<>();
+    
+    
+     public static ArrayList<ContratoAlquiler> getContratos() {
+    return contratos;
+}
+    
 
     private ContratoAlquiler(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, LocalDate fechaFin) {
         this.numeroContrato = UUID.randomUUID().toString();
@@ -77,6 +84,9 @@ public class ContratoAlquiler {
                     }
                 }
             }
+            
+            
+            
 
             ContratoAlquiler nuevoContrato = new ContratoAlquiler(cliente, vehiculo, fechaInicio, fechaFin);
             contratos.add(nuevoContrato);

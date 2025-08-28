@@ -4,19 +4,94 @@
  */
 package GUI.Paneles;
 
+import GUI.Paneles.JDialog_GUI.P4_Actualizar;
+import GUI.Paneles.JDialog_GUI.P4_Nuevo;
+import Gestion_Vehiculos.Vehiculo;
+import Gestion_Vehiculos.VehiculosHashMap;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author isaac
  */
 public class P4 extends javax.swing.JPanel {
-
+private final String placeholderText = "Buscar Vehiculos";
     /**
-     * Creates new form P3
+     * Creates new form P2
      */
     public P4() {
+       
         initComponents();
+        inicializar();
+       TXT.setText(placeholderText);
+       TXT.setForeground(java.awt.Color.GRAY);
     }
 
+    
+      private void inicializar() {
+        cargarVehiculosEnTabla(VehiculosHashMap.listarVehiculos());
+        TXT.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                buscar();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                buscar();
+            }
+            public void insertUpdate(DocumentEvent e) {
+                buscar();
+            }
+            private void buscar() {
+                String texto = TXT.getText().toLowerCase();
+                List<Vehiculo> todos = VehiculosHashMap.listarVehiculos();
+                List<Vehiculo> filtrados = new ArrayList<>();
+                for (Vehiculo v : todos) {
+                    if (v.getPlaca().toLowerCase().contains(texto) ||
+                        v.getMarca().toLowerCase().contains(texto) ||
+                        v.getModelo().toLowerCase().contains(texto)) {
+                        filtrados.add(v);
+                    }
+                }
+                cargarVehiculosEnTabla(filtrados);
+            }
+        });
+
+ 
+        VehiculosTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && VehiculosTable.getSelectedRow() != -1) {
+                int fila = VehiculosTable.getSelectedRow();
+                String placa = VehiculosTable.getValueAt(fila, 0).toString();
+                jTextField1.setText("Seleccionado: " + placa);
+            }
+        });
+    }
+
+    public void cargarVehiculosEnTabla(List<Vehiculo> lista) {
+        DefaultTableModel modelo = (DefaultTableModel) VehiculosTable.getModel();
+        modelo.setRowCount(0); 
+
+        for (Vehiculo v : lista) {
+            Object[] fila = {
+                v.getPlaca(),
+                v.getMarca(),
+                v.getModelo(),
+                v.getAño(),
+                v.getTipo(),
+                v.getEstado()
+            };
+            modelo.addRow(fila);
+        }
+    }
+    
+    
+    public void Actualizartabla(){
+        cargarVehiculosEnTabla(Gestion_Vehiculos.VehiculosHashMap.listarVehiculos());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,32 +102,238 @@ public class P4 extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        VehiculosTable = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        TXT = new javax.swing.JTextField();
 
-        jPanel1.setBackground(new java.awt.Color(255, 153, 102));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setPreferredSize(new java.awt.Dimension(870, 473));
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 153));
+        jPanel1.setPreferredSize(new java.awt.Dimension(870, 470));
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 540, 330));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(840, 440));
+
+        VehiculosTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Placa", "Marca", "Modelo", "Año", "Tipo", "Estado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        VehiculosTable.setColumnSelectionAllowed(true);
+        jScrollPane2.setViewportView(VehiculosTable);
+        VehiculosTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (VehiculosTable.getColumnModel().getColumnCount() > 0) {
+            VehiculosTable.getColumnModel().getColumn(0).setResizable(false);
+            VehiculosTable.getColumnModel().getColumn(1).setResizable(false);
+            VehiculosTable.getColumnModel().getColumn(2).setResizable(false);
+            VehiculosTable.getColumnModel().getColumn(3).setResizable(false);
+            VehiculosTable.getColumnModel().getColumn(4).setResizable(false);
+            VehiculosTable.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        jButton3.setText("Editar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Imprimir informe");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setEditable(false);
+        jTextField1.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField1.setText("Selecionado:");
+
+        jButton2.setText("Agregar Nuevo Vehiculo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        TXT.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TXTFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TXTFocusLost(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TXT)
+                    .addComponent(jTextField1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButton4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(TXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addGap(22, 22, 22))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane1.addTab("Vehiculos", jPanel2);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+    java.awt.Frame frame = null;
+    if (window instanceof java.awt.Frame) {
+        frame = (java.awt.Frame) window;
+    }
+    P4_Nuevo dialog = new P4_Nuevo(frame, true);
+    dialog.setLocationRelativeTo(frame);
+    dialog.setVisible(true);
+    cargarVehiculosEnTabla(Gestion_Vehiculos.VehiculosHashMap.listarVehiculos());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+   
+    int[] filasSeleccionadas = VehiculosTable.getSelectedRows();
+    if (filasSeleccionadas.length == 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay vehículos seleccionados para imprimir.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    StringBuilder mensaje = new StringBuilder();
+    for (int fila : filasSeleccionadas) {
+        String placa = VehiculosTable.getValueAt(fila, 0).toString();
+        String marca = VehiculosTable.getValueAt(fila, 1).toString();
+        String modelo = VehiculosTable.getValueAt(fila, 2).toString();
+        String anio = VehiculosTable.getValueAt(fila, 3).toString();
+        String tipo = VehiculosTable.getValueAt(fila, 4).toString();
+        String estado = VehiculosTable.getValueAt(fila, 5).toString();
+
+        mensaje.append(" [Placa :      ").append(placa).append("]\n")
+               .append("[Marca :      ").append(marca).append("]\n")
+               .append("[Modelo :     ").append(modelo).append("]\n")
+               .append("[Año :        ").append(anio).append("]\n")
+               .append("[Tipo :       ").append(tipo).append("]\n")
+               .append("[Estado :     ").append(estado).append("]\n\n");
+    }
+    javax.swing.JOptionPane.showMessageDialog(this, mensaje.toString(), "Informe de Vehículos", javax.swing.JOptionPane.INFORMATION_MESSAGE);   
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void TXTFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TXTFocusGained
+
+        if (TXT.getText().equals(placeholderText)) {
+        TXT.setText("");
+        TXT.setForeground(java.awt.Color.BLACK);
+    }
+    }//GEN-LAST:event_TXTFocusGained
+
+    private void TXTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TXTFocusLost
+        if (TXT.getText().isEmpty()) {
+        TXT.setText(placeholderText);
+        TXT.setForeground(java.awt.Color.GRAY);
+    }
+    }//GEN-LAST:event_TXTFocusLost
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+  
+     int filaSeleccionada = VehiculosTable.getSelectedRow();
+     if (filaSeleccionada != -1) {
+    String placa = VehiculosTable.getValueAt(filaSeleccionada, 0).toString(); 
+    Vehiculo v = VehiculosHashMap.buscarVehiculo(placa);
+
+     P4_Actualizar dialogoActualizar = new P4_Actualizar(null, true, v);
+     dialogoActualizar.setVisible(true);
+      cargarVehiculosEnTabla(Gestion_Vehiculos.VehiculosHashMap.listarVehiculos());
+} else {
+    JOptionPane.showMessageDialog(this, "Seleccione una fila para actualizar");
+     }  
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField TXT;
+    private javax.swing.JTable VehiculosTable;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

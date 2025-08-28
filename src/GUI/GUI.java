@@ -7,33 +7,33 @@ package GUI;
 import GUI.Paneles.P1;
 import GUI.Paneles.P2;
 import GUI.Paneles.P3;
-import Sonidos.ReproductorAudio;
+import GUI.Paneles.P4;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.io.File;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
+
 
 /**
  *
  * @author isaac
  */
 public class GUI extends javax.swing.JFrame {
-   private Clip clip;
-   private final JFileChooser fileChooser = new JFileChooser();
-   
-   
-   
+    private P1 panelClientes;
+    private P2 panelContratos;
+    private P3 panelEmpleados;
+    private P4 panelVehiculos;
+
    
     public GUI() {
         initComponents();
+       panelClientes = new P1();
+       panelContratos = new P2();
+       panelEmpleados = new P3();
+       panelVehiculos = new P4();
+
+              
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,7 +78,7 @@ public class GUI extends javax.swing.JFrame {
         );
         contLayout.setVerticalGroup(
             contLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         JP.setBackground(new java.awt.Color(0, 153, 102));
@@ -146,6 +146,11 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem3.setText("Gestión de Vehiculos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -190,8 +195,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         cambiarcolor(102,102,255);
-        P2 p = new P2();
-        cambiarpanel(p);
+        cambiarpanel(panelContratos);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
@@ -201,8 +205,7 @@ public class GUI extends javax.swing.JFrame {
     private void Item1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Item1ActionPerformed
         
         cambiarcolor(51,153,0);
-        P1 p = new P1();
-        cambiarpanel(p);
+        cambiarpanel(panelClientes);
     }//GEN-LAST:event_Item1ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
@@ -210,7 +213,6 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
         cambiarcolor(0,153,102);
          cont.removeAll();
          cont.revalidate();
@@ -219,9 +221,14 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         cambiarcolor(255,153,102);
-        P3 p = new P3();
-        cambiarpanel(p);
+        cambiarpanel(panelEmpleados);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        panelVehiculos.Actualizartabla();
+        cambiarcolor(255,255,153);
+        cambiarpanel(panelVehiculos);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,6 +269,7 @@ public class GUI extends javax.swing.JFrame {
 
     public void cambiarcolor(int r, int g, int b) {
     JP.setBackground(new Color(r, g, b));
+    cont.setBackground(new Color(r, g, b));
 }   
 
 
