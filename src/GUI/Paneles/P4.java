@@ -8,12 +8,12 @@ package GUI.Paneles;
  *
  * @author isaac
  */
-public class P3 extends javax.swing.JPanel {
+public class P4 extends javax.swing.JPanel {
 
     /**
      * Creates new form P3
      */
-    public P3() {
+    public P4() {
         initComponents();
     }
 

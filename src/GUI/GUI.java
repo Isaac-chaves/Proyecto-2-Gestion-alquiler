@@ -46,6 +46,7 @@ public class GUI extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
+        jMenuItem4 = new javax.swing.JMenuItem();
         cont = new javax.swing.JPanel();
         JP = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
@@ -54,6 +55,7 @@ public class GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         Item1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -61,11 +63,23 @@ public class GUI extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
+        jMenuItem4.setText("jMenuItem4");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestión Alquiler de Vehiculos");
 
         cont.setBackground(new java.awt.Color(0, 153, 102));
-        cont.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout contLayout = new javax.swing.GroupLayout(cont);
+        cont.setLayout(contLayout);
+        contLayout.setHorizontalGroup(
+            contLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 871, Short.MAX_VALUE)
+        );
+        contLayout.setVerticalGroup(
+            contLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 478, Short.MAX_VALUE)
+        );
 
         JP.setBackground(new java.awt.Color(0, 153, 102));
 
@@ -122,13 +136,17 @@ public class GUI extends javax.swing.JFrame {
         jMenu1.add(Item1);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem2.setText("Gestion Alquiler/Contratos");
+        jMenuItem2.setText("Gestion Contratos/Reservas");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
             }
         });
         jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem3.setText("Gestión de Vehiculos");
+        jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
 
@@ -139,7 +157,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem1.setText("Empleados");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +175,7 @@ public class GUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(cont, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -268,6 +286,8 @@ private void cambiarpanel(JPanel p){
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
