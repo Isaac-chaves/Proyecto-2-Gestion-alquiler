@@ -46,6 +46,17 @@ public class VehiculosHashMap {
         vehiculos.put(placa, v);
     }
 
+     public static Vehiculo buscarVehiculoDisponiblePorTipo(String tipo) {
+    for (Vehiculo v : vehiculos.values()) {
+        if (v.getTipo() != null && v.getTipo().equalsIgnoreCase(tipo.trim()) && v.getEstado().equalsIgnoreCase("Disponible")) {
+            return v;
+        }
+    }
+    return null; // No se encontró ninguno disponible
+}
+    
+    
+    
     public static void actualizarVehiculo(String placa, String nuevoModelo, String nuevoTipo, String nuevoEstado)
             throws IllegalArgumentException, NoSuchElementException {
         Vehiculo v = vehiculos.get(placa);

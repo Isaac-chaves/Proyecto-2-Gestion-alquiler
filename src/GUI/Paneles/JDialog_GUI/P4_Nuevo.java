@@ -54,6 +54,8 @@ public class P4_Nuevo extends javax.swing.JDialog {
             }
         });
 
+        tipoText.setToolTipText("Sedán,\nSUV,\nPick-up");
+
         jPanel2.setBackground(new java.awt.Color(255, 255, 153));
 
         jLabel6.setText("Agregar Nuevo Vehiculo");

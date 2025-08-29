@@ -8,6 +8,7 @@ import GUI.Paneles.P1;
 import GUI.Paneles.P2;
 import GUI.Paneles.P3;
 import GUI.Paneles.P4;
+import GUI.Paneles.P5;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JPanel;
@@ -22,6 +23,7 @@ public class GUI extends javax.swing.JFrame {
     private P2 panelContratos;
     private P3 panelEmpleados;
     private P4 panelVehiculos;
+    private P5 panelReserva;
 
    
     public GUI() {
@@ -30,7 +32,7 @@ public class GUI extends javax.swing.JFrame {
        panelContratos = new P2();
        panelEmpleados = new P3();
        panelVehiculos = new P4();
-
+       panelReserva =new P5();
               
     }
     
@@ -56,6 +58,7 @@ public class GUI extends javax.swing.JFrame {
         Item1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -153,6 +156,15 @@ public class GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem3);
 
+        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem5.setText("Gestion Reserva");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Administracion de Empleados");
@@ -162,7 +174,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_4, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_5, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem1.setText("Empleados");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +206,7 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        panelContratos.actualizartablas();
         cambiarcolor(102,102,255);
         cambiarpanel(panelContratos);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -203,7 +216,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void Item1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Item1ActionPerformed
-        
+        panelClientes.ActualizarTablaClientes();
         cambiarcolor(51,153,0);
         cambiarpanel(panelClientes);
     }//GEN-LAST:event_Item1ActionPerformed
@@ -220,6 +233,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        panelEmpleados.ActualizarTablaEmpleados();
         cambiarcolor(255,153,102);
         cambiarpanel(panelEmpleados);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -229,6 +243,12 @@ public class GUI extends javax.swing.JFrame {
         cambiarcolor(255,255,153);
         cambiarpanel(panelVehiculos);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        panelReserva.actualizartablas();
+        cambiarcolor(0,255,204);
+        cambiarpanel(panelReserva);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -296,6 +316,7 @@ private void cambiarpanel(JPanel p){
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }

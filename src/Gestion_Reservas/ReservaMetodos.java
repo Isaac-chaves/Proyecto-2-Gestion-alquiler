@@ -80,7 +80,49 @@ public static boolean confirmar(String id) {
         return true;
     }
     
-private static Reserva buscarPorId(String id) {
+public static boolean eliminarReserva(String id) {
+    Iterator<Reserva> it = reservas.iterator();
+    boolean eliminado = false;
+    while (it.hasNext()) {
+        Reserva r = it.next();
+        if (r.getId().equals(id)) {
+            it.remove();
+            eliminado = true;
+        }
+    }
+
+    // También eliminar si estaba en la cola de espera
+    Iterator<Reserva> itCola = colaEspera.iterator();
+    while (itCola.hasNext()) {
+        Reserva r = itCola.next();
+        if (r.getId().equals(id)) {
+            itCola.remove();
+        }
+    }
+
+    return eliminado;
+}
+public static boolean cancelarReservaEnEspera(String id) {
+    Iterator<Reserva> itCola = colaEspera.iterator();
+    boolean eliminado = false;
+    while (itCola.hasNext()) {
+        Reserva r = itCola.next();
+        if (r.getId().equals(id)) {
+            itCola.remove();
+            eliminado = true;
+            break;
+        }
+    }
+
+    // También quitar de la lista general
+    if (eliminado) {
+        reservas.removeIf(r -> r.getId().equals(id));
+    }
+
+    return eliminado;
+}
+
+public static Reserva buscarPorId(String id) {
       for (Reserva r : reservas) 
            if (r.getId().equals(id)) return r;
        return null;
@@ -97,7 +139,7 @@ private static Vehiculo buscarVehiculoDisponible(String tipo, LocalDate inicio, 
         return null;
     }
     
-private static boolean disponible(String placa, LocalDate inicio, LocalDate fin, String excluirId) {
+public static boolean disponible(String placa, LocalDate inicio, LocalDate fin, String excluirId) {
       for (Reserva r : reservas) {
            if (r.getId().equals(excluirId) || r.getEstado().equals("Cancelada")) continue;
            if (r.getVehiculoPlaca() != null && r.getVehiculoPlaca().equals(placa) && 

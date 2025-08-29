@@ -4,46 +4,90 @@
  */
 package GUI.Paneles;
 
+import GUI.Paneles.JDialog_GUI.P2_NuevoContrato_ConReserva;
+import GUI.Paneles.JDialog_GUI.P2_NuevoContrato_SinReserva;
+import GUI.Paneles.JDialog_GUI.P5_NuevoReserva;
 import Gestion_Contratos.ContratoAlquiler;
 import Gestion_Reservas.Reserva;
 import Gestion_Reservas.ReservaMetodos;
+import Gestion_Vehiculos.Vehiculo;
+import Gestion_Vehiculos.VehiculosHashMap;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author isaac
  */
 public class P2 extends javax.swing.JPanel {
-
+private TableRowSorter<DefaultTableModel> sorter;
     /**
      * Creates new form P2
      */
     public P2() {
         initComponents();
-        cargarTablas();
-    }
+       cargarTablas();
+       DefaultTableModel modelo = (DefaultTableModel) TablaCont.getModel();
+        sorter = new TableRowSorter<>(modelo);
+        TablaCont.setRowSorter(sorter);
 
-    
-    
-    
- private void cargarTablas() {
-    DefaultTableModel modeloReservas = (DefaultTableModel) Tablareserva.getModel();
-    modeloReservas.setRowCount(0);
-    List<Reserva> reservas = ReservaMetodos.getReservas();
-    for (Reserva r : reservas) {
-        Object[] fila = new Object[] {
-            r.getId(),
-            r.getClienteCedula(),
-            r.getVehiculoPlaca(),
-            r.getInicio().toString(),
-            r.getFin().toString(),
-            r.getEstado()
-        };
-        modeloReservas.addRow(fila);
+       inicializar();
     }
+    
+    
+    
+    
+    private void inicializar(){
+    
+    Buscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            filtrarTabla();
+        }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            filtrarTabla();
+        }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            filtrarTabla();
+        }
+
+        private void filtrarTabla() {
+            String texto = Buscar.getText();
+            if (texto.trim().length() == 0) {
+                sorter.setRowFilter(null);
+            } else {
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+            }
+        }
+    });
+
+    TablaCont.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int fila = TablaCont.getSelectedRow();
+            if (fila != -1) {
+                int filaModelo = TablaCont.convertRowIndexToModel(fila);
+                String numeroContrato = (String) TablaCont.getModel().getValueAt(filaModelo, 0);
+                Selecionar.setText("Seleccionado: " + numeroContrato);
+            } else {
+                Selecionar.setText("Seleccionado:");
+            }
+        }
+    });
+       }
+  
+    public void actualizartablas(){
+    cargarTablas();
+}
+
+   
+   private void cargarTablas() {
     DefaultTableModel modeloContratos = (DefaultTableModel) TablaCont.getModel();
     modeloContratos.setRowCount(0);
     ArrayList<ContratoAlquiler> contratos = ContratoAlquiler.getContratos();
@@ -59,9 +103,8 @@ public class P2 extends javax.swing.JPanel {
         };
         modeloContratos.addRow(fila);
     }
-}
+ }
 
-    
     
     
     /**
@@ -78,17 +121,12 @@ public class P2 extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaCont = new javax.swing.JTable();
-        BuscarContractos = new javax.swing.JTextField();
-        txtSeleccionadoContratos = new javax.swing.JTextField();
+        Buscar = new javax.swing.JTextField();
+        Selecionar = new javax.swing.JTextField();
         btnEditarContrato = new javax.swing.JButton();
         btnNuevoContrato = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        Tablareserva = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        btnBuscarReserva = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(870, 473));
 
@@ -135,22 +173,22 @@ public class P2 extends javax.swing.JPanel {
             TablaCont.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        BuscarContractos.setText("Buscar :");
-        BuscarContractos.addActionListener(new java.awt.event.ActionListener() {
+        Buscar.setText("Buscar :");
+        Buscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscarContractosActionPerformed(evt);
+                BuscarActionPerformed(evt);
             }
         });
 
-        txtSeleccionadoContratos.setEditable(false);
-        txtSeleccionadoContratos.setText("Seleccionado :");
-        txtSeleccionadoContratos.addActionListener(new java.awt.event.ActionListener() {
+        Selecionar.setEditable(false);
+        Selecionar.setText("Seleccionado :");
+        Selecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSeleccionadoContratosActionPerformed(evt);
+                SelecionarActionPerformed(evt);
             }
         });
 
-        btnEditarContrato.setText("Editar");
+        btnEditarContrato.setText("Cancelar");
         btnEditarContrato.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarContratoActionPerformed(evt);
@@ -164,115 +202,62 @@ public class P2 extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("Nuevo Contraro sin reserva");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Finalizarcontrarto");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BuscarContractos)
-                    .addComponent(txtSeleccionadoContratos)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(btnEditarContrato)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                        .addComponent(btnNuevoContrato)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnNuevoContrato)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1))
+                    .addComponent(Buscar)
+                    .addComponent(Selecionar))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(BuscarContractos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtSeleccionadoContratos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Selecionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditarContrato)
-                    .addComponent(btnNuevoContrato))
-                .addGap(26, 26, 26))
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNuevoContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Contratos", jPanel3);
-
-        Tablareserva.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Cliente", "Vehiculo", "Inicio ", "Final", "Estado"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        Tablareserva.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(Tablareserva);
-        if (Tablareserva.getColumnModel().getColumnCount() > 0) {
-            Tablareserva.getColumnModel().getColumn(0).setResizable(false);
-            Tablareserva.getColumnModel().getColumn(1).setResizable(false);
-            Tablareserva.getColumnModel().getColumn(2).setResizable(false);
-            Tablareserva.getColumnModel().getColumn(3).setResizable(false);
-            Tablareserva.getColumnModel().getColumn(4).setResizable(false);
-            Tablareserva.getColumnModel().getColumn(5).setResizable(false);
-        }
-
-        jButton3.setText("Eliminar");
-
-        jButton4.setText("Nueva Reserva");
-
-        jTextField1.setEditable(false);
-        jTextField1.setText("Seleccionado :");
-
-        btnBuscarReserva.setText("Buscar :");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4))
-                    .addComponent(btnBuscarReserva))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnBuscarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
-                .addGap(22, 22, 22))
-        );
-
-        jTabbedPane1.addTab("Reservas", jPanel2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -303,25 +288,74 @@ public class P2 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-    
-    private void txtSeleccionadoContratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSeleccionadoContratosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSeleccionadoContratosActionPerformed
-
-    private void BuscarContractosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarContractosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BuscarContractosActionPerformed
-
-    private void btnEditarContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarContratoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditarContratoActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame frame = null;
+        if (window instanceof java.awt.Frame) {
+            frame = (java.awt.Frame) window;
+        }
+        P2_NuevoContrato_SinReserva dialog = new P2_NuevoContrato_SinReserva(frame, true);
+        dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+        cargarTablas();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnNuevoContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoContratoActionPerformed
-        // TODO add your handling code here:
+        java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame frame = null;
+        if (window instanceof java.awt.Frame) {
+            frame = (java.awt.Frame) window;
+        }
+        P2_NuevoContrato_ConReserva dialog = new P2_NuevoContrato_ConReserva(frame, true);
+        dialog.setLocationRelativeTo(frame);
+        dialog.setVisible(true);
+        cargarTablas();                  
     }//GEN-LAST:event_btnNuevoContratoActionPerformed
-// Reservas botones y textos
+
+    private void btnEditarContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarContratoActionPerformed
+            int filaSeleccionada = TablaCont.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un contrato de la tabla.");
+        return;
+    }
+
+    String numeroContrato = (String) TablaCont.getValueAt(filaSeleccionada, 0);
+    String estadoActual = (String) TablaCont.getValueAt(filaSeleccionada, 6);
+
+    if ("Finalizado".equalsIgnoreCase(estadoActual)) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No se puede cancelar un contrato finalizado.");
+        return;
+    }
+
+    String resultado = ContratoAlquiler.cancelarContrato(numeroContrato);
+    javax.swing.JOptionPane.showMessageDialog(this, resultado);
+    cargarTablas();
+    }//GEN-LAST:event_btnEditarContratoActionPerformed
+
+    private void SelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelecionarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SelecionarActionPerformed
+
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BuscarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+           int filaSeleccionada = TablaCont.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un contrato de la tabla.");
+        return;
+    }
+
+    String numeroContrato = (String) TablaCont.getValueAt(filaSeleccionada, 0);
+    String resultado = ContratoAlquiler.finalizarContrato(numeroContrato);
+    javax.swing.JOptionPane.showMessageDialog(this, resultado);
+    cargarTablas();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    
+    
+    
     
     
     
@@ -330,21 +364,16 @@ public class P2 extends javax.swing.JPanel {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField BuscarContractos;
+    private javax.swing.JTextField Buscar;
+    private javax.swing.JTextField Selecionar;
     private javax.swing.JTable TablaCont;
-    private javax.swing.JTable Tablareserva;
-    private javax.swing.JTextField btnBuscarReserva;
     private javax.swing.JButton btnEditarContrato;
     private javax.swing.JButton btnNuevoContrato;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField txtSeleccionadoContratos;
     // End of variables declaration//GEN-END:variables
 }

@@ -183,6 +183,11 @@ private final String placeholderText = "Buscar Vehiculos";
                 TXTFocusLost(evt);
             }
         });
+        TXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TXTActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -323,6 +328,10 @@ private final String placeholderText = "Buscar Vehiculos";
     JOptionPane.showMessageDialog(this, "Seleccione una fila para actualizar");
      }  
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void TXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TXTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TXTActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TXT;

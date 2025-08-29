@@ -1,4 +1,4 @@
-
+ 
 package Gestion_Contratos;
 
 import Gestion_Cliente.Cliente;
@@ -120,6 +120,7 @@ public class ContratoAlquiler {
             return "Error al finalizar contrato: " + e.getMessage();
         }
     }
+    
 
     public static String cancelarContrato(String numeroContrato) {
         try {
@@ -158,6 +159,7 @@ public class ContratoAlquiler {
         }
         return resultado;
     }
+    
 
     public static ArrayList<ContratoAlquiler> buscarPorPlacaVehiculo(String placa) {
         ArrayList<ContratoAlquiler> resultado = new ArrayList<>();

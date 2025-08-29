@@ -151,7 +151,8 @@ public static boolean eliminarCliente(String cedula) throws Exception {
     }
 
     @Override
-    public String toString() {
-        return "Cliente{" + "licenciaConducir=" + licenciaConducir + '}';
-    }
+
+   public String toString() {
+    return getCedula(); 
+}
 }
