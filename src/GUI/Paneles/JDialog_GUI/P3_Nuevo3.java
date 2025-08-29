@@ -4,18 +4,20 @@
  */
 package GUI.Paneles.JDialog_GUI;
 
-import Gestion_Cliente.Cliente;
+
+import Gestion_Empleado.Empleado;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author isaac
  */
-public class P1_Nuevo extends javax.swing.JDialog {
+public class P3_Nuevo3 extends javax.swing.JDialog {
 
     /**
      * Creates new form P1_Nuevo
      */
-    public P1_Nuevo(java.awt.Frame parent, boolean modal) {
+    public P3_Nuevo3(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -40,12 +42,14 @@ public class P1_Nuevo extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtLicencia = new javax.swing.JTextField();
+        txtPuesto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JFormattedTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtSalario = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nuevo contrato");
@@ -59,21 +63,21 @@ public class P1_Nuevo extends javax.swing.JDialog {
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(51, 255, 51));
+        jPanel2.setBackground(new java.awt.Color(255, 102, 0));
 
         jLabel12.setBackground(new java.awt.Color(0, 0, 0));
         jLabel12.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel12.setText("Agregar Nuevo Cliente ");
+        jLabel12.setText("Agregar Nuevo Empleado ");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(252, 252, 252)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel12)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(212, 212, 212))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,9 +110,20 @@ public class P1_Nuevo extends javax.swing.JDialog {
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel15.setText("Licencia");
+        jLabel15.setText("Puesto");
 
         txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+
+        jLabel6.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Salario");
+
+        txtSalario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSalarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -149,7 +164,13 @@ public class P1_Nuevo extends javax.swing.JDialog {
                             .addGroup(jPanel14Layout.createSequentialGroup()
                                 .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(19, 19, 19)
-                                .addComponent(txtLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel14Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel6))
+                                    .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtSalario)
+                                        .addComponent(txtPuesto, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)))))
                         .addContainerGap(75, Short.MAX_VALUE))
                     .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -175,12 +196,16 @@ public class P1_Nuevo extends javax.swing.JDialog {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -191,7 +216,7 @@ public class P1_Nuevo extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -199,73 +224,94 @@ public class P1_Nuevo extends javax.swing.JDialog {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
 
-     try {
+      try {
         String cedula = txtId.getText().trim();
         String telefono = txtPhone.getText().trim();
         String nombre = txtName.getText().trim();
         String correo = txtCorreo.getText().trim();
-        String licencia = txtLicencia.getText().trim();
+        String puesto = txtPuesto.getText().trim();
         String fechaNacimiento = txtFecha.getText().trim();
-       
+        String salarioStr = txtSalario.getText().trim();
+        
+
         if (cedula.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "La cédula no puede estar vacía");
+            JOptionPane.showMessageDialog(this, "La cédula no puede estar vacía");
             return;
         }
         if (telefono.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "El teléfono no puede estar vacío");
+            JOptionPane.showMessageDialog(this, "El teléfono no puede estar vacío");
             return;
         }
         if (nombre.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío");
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío");
             return;
         }
         if (correo.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "El correo no puede estar vacío");
+            JOptionPane.showMessageDialog(this, "El correo no puede estar vacío");
             return;
         }
-        if (licencia.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "La licencia no puede estar vacía");
+        if (puesto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El puesto no puede estar vacío");
             return;
         }
         if (fechaNacimiento.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "La fecha de nacimiento no puede estar vacía");
+            JOptionPane.showMessageDialog(this, "La fecha de nacimiento no puede estar vacía");
             return;
         }
+        if (salarioStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El salario no puede estar vacío");
+            return;
+        }
+      
+        double salario;
+        try {
+            salario = Double.parseDouble(salarioStr);
+            if (salario <= 0) {
+                JOptionPane.showMessageDialog(this, "El salario debe ser mayor a 0");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El salario debe ser un número válido");
+            return;
+        }
+          Empleado empleado = new Empleado("", "", null, "", "", "", 0);
+         boolean empleadoAgregado = empleado.agregarEmpleado(cedula, nombre, fechaNacimiento, telefono, correo, puesto, salario);
         
-        boolean clienteAgregado = Cliente.agregarCliente(cedula, nombre, fechaNacimiento, telefono, correo, licencia);
-        
-    if (clienteAgregado) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente.");
+        if (empleadoAgregado) {
+            JOptionPane.showMessageDialog(this, "Empleado agregado exitosamente.");
             txtId.setText("");
             txtPhone.setText("");
             txtName.setText("");
             txtCorreo.setText("");
-            txtLicencia.setText("");
+            txtPuesto.setText("");
             txtFecha.setText("");
+            txtSalario.setText("");
             
             this.dispose();
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "Error al agregar cliente. Verifique:\n" +
+            JOptionPane.showMessageDialog(this, 
+                "Error al agregar empleado. Verifique:\n" +
                 "- La cédula no esté duplicada\n" +
                 "- El correo tenga formato válido (ejemplo@dominio.com)\n" +
                 "- El teléfono tenga exactamente 8 dígitos\n" +
-                "- La licencia no esté vacía\n" +
-                "- La fecha de nacimiento tenga formato válido\n" +
-                "- El cliente sea mayor de edad\n" +
+                "- El empleado sea mayor de edad\n" +
                 "- La fecha no sea futura", 
                 "Error de validación", 
-                javax.swing.JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE);
         }
         
-    } catch (Exception ex) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Error inesperado: " + ex.getMessage() + "\nCausa: " + (ex.getCause() != null ? ex.getCause().getMessage() : "No especificada"), 
-            "Error", 
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace(); // Para ver el error completo en consola
+} catch (Exception ex) {
+    JOptionPane.showMessageDialog(this, 
+        "Error inesperado: " + ex.getMessage(), 
+        "Error", 
+        JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
     }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void txtSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSalarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSalarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,20 +330,21 @@ public class P1_Nuevo extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(P1_Nuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(P3_Nuevo3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(P1_Nuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(P3_Nuevo3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(P1_Nuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(P3_Nuevo3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(P1_Nuevo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(P3_Nuevo3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                P1_Nuevo dialog = new P1_Nuevo(new javax.swing.JFrame(), true);
+                P3_Nuevo3 dialog = new P3_Nuevo3(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -310,18 +357,9 @@ public class P1_Nuevo extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -329,37 +367,14 @@ public class P1_Nuevo extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField placaText;
-    private javax.swing.JTextField placaText1;
-    private javax.swing.JTextField placaText2;
-    private javax.swing.JTextField placaText3;
-    private javax.swing.JTextField placaText4;
-    private javax.swing.JTextField tipoText;
-    private javax.swing.JTextField tipoText1;
-    private javax.swing.JTextField tipoText2;
-    private javax.swing.JTextField tipoText3;
-    private javax.swing.JTextField tipoText4;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JFormattedTextField txtFecha;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtLicencia;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtPuesto;
+    private javax.swing.JTextField txtSalario;
     // End of variables declaration//GEN-END:variables
 }

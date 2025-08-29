@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Persona;
+package persona;
  import java.time.LocalDate;
 /**
  *
  * @author UTN
  */
-public abstract class Persona {
+public abstract class persona {
     protected String cedula;
     protected String nombre;
     protected LocalDate fechaNacimiento;
@@ -16,7 +16,7 @@ public abstract class Persona {
     protected String correo;
 
 
-    public Persona(String cedula, String nombre, LocalDate fechaNacimiento,String telefono, String correo) {
+    public persona(String cedula, String nombre, LocalDate fechaNacimiento,String telefono, String correo) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
@@ -56,7 +56,7 @@ public abstract class Persona {
 
     @Override
     public String toString() {
-        return "Persona{" + "cedula=" + cedula + ", nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", telefono=" + telefono + ", correo=" + correo + '}';
+        return "persona{" + "cedula=" + cedula + ", nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", telefono=" + telefono + ", correo=" + correo + '}';
     }
 
    

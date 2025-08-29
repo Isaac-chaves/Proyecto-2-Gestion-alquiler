@@ -4,12 +4,14 @@
  */
 package Gestion_Empleado;
 
-import Persona.Persona;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.time.Period;
+import persona.persona;
 import utils.UtilDate;
 
-public class Empleado extends Persona {
+public class Empleado extends persona {
     private static final ArrayList<Empleado> empleados = new ArrayList<>();
     
     
@@ -72,6 +74,9 @@ Empleado empleado = new Empleado(cedula, nombre, fechaNacimiento, telefono, corr
         }
     }
    
+ public int calcularEdad() {
+        return Period.between(this.getFechaNacimiento(), LocalDate.now()).getYears();
+    }
    
 public boolean eliminarEmpleado(String cedula) {
     for (int i = 0; i < empleados.size(); i++) {

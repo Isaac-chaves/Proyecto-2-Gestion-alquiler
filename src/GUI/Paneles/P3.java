@@ -4,19 +4,101 @@
  */
 package GUI.Paneles;
 
+
+import GUI.Paneles.JDialog_GUI.P3_Actualizar3;
+import GUI.Paneles.JDialog_GUI.P3_Nuevo3;
+import Gestion_Empleado.Empleado;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author isaac
  */
 public class P3 extends javax.swing.JPanel {
 
+    private String placeholderText = "Buscar...";
+
     /**
-     * Creates new form P3
+     * Creates new form P1
      */
     public P3() {
         initComponents();
+        inicializarEmpleados();
+        txtBuscar.setText(placeholderText);
     }
 
+    public void cargarEmpleadosEnTabla(List<Empleado> lista) {
+        DefaultTableModel modelo = (DefaultTableModel) txtTabla.getModel();
+        modelo.setRowCount(0); 
+
+        for (Empleado e : lista) {
+            Object[] fila = {
+                e.getCedula(),e.getNombre(),e.calcularEdad(), e.getTelefono(),e.getCorreo(),e.getPuesto(),e.getSalario()
+            };
+            modelo.addRow(fila);
+        }
+        
+    }
+
+    private void inicializarEmpleados() {
+        cargarEmpleadosEnTabla(Empleado.getEmpleados());
+        txtBuscar.setText(placeholderText);
+        txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            
+      @Override
+       public void changedUpdate(DocumentEvent e) {
+          buscarEmpleados();
+         }
+            
+      @Override
+        public void removeUpdate(DocumentEvent e) {
+           buscarEmpleados();
+          }
+            
+      @Override
+        public void insertUpdate(DocumentEvent e) {
+         buscarEmpleados();
+      }
+            
+private void buscarEmpleados() {
+ String texto = txtBuscar.getText().toLowerCase();
+   if (texto.equals(placeholderText.toLowerCase()) || texto.trim().isEmpty()) {
+    cargarEmpleadosEnTabla(Empleado.getEmpleados());
+    return;
+  }
+   List<Empleado> todos = Empleado.getEmpleados();
+   List<Empleado> filtrados = new ArrayList<>();
+         for (Empleado emp : todos) {
+           if (emp.getCedula().toLowerCase().contains(texto) ||
+             emp.getNombre().toLowerCase().contains(texto) ||
+              emp.getCorreo().toLowerCase().contains(texto) ||
+             emp.getTelefono().toLowerCase().contains(texto) ||
+             emp.getPuesto().toLowerCase().contains(texto) ||
+            String.valueOf(emp.getSalario()).contains(texto)) {
+           filtrados.add(emp);
+            }
+        }
+        cargarEmpleadosEnTabla(filtrados);
+      }
+});
+        txtTabla.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && txtTabla.getSelectedRow() != -1) {
+                int fila = txtTabla.getSelectedRow();
+                String cedula = txtTabla.getValueAt(fila, 0).toString();
+                String nombre = txtTabla.getValueAt(fila, 1).toString();
+                jTextField1.setText("Seleccionado: " + nombre + " (" + cedula + ")");
+            }
+        });
+    }
+    
+public void ActualizarTablaEmpleados() {
+     cargarEmpleadosEnTabla(Empleado.getEmpleados());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,32 +109,330 @@ public class P3 extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        txtTabla = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        txtBuscar = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
-        jPanel1.setBackground(new java.awt.Color(255, 153, 102));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.setBackground(new java.awt.Color(255, 102, 0));
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jTabbedPane1.setMinimumSize(new java.awt.Dimension(110, 70));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(840, 440));
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 540, 330));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        txtTabla.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 0)), null));
+        txtTabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Cedula", "Nombre", "Edad", "Telefono", "Correo", "Puesto", "Salario"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(txtTabla);
+
+        jButton2.setText("Imprimir informe");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setText("seleccionado:");
+
+        jButton3.setText("Editar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        txtBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtBuscarFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBuscarFocusLost(evt);
+            }
+        });
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Agregar Empleado");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Eliminar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(81, 81, 81))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 10, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Empleado", jPanel2);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+ int[] filasSeleccionadas = txtTabla.getSelectedRows();
+     if (filasSeleccionadas.length == 0) {
+        JOptionPane.showMessageDialog(this,
+           "No hay clientes seleccionados para imprimir.",
+            "Aviso",
+            JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+
+    StringBuilder mensaje = new StringBuilder();
+      for (int fila : filasSeleccionadas) {
+            String cedula = txtTabla.getValueAt(fila, 0).toString();
+            String nombre = txtTabla.getValueAt(fila, 1).toString();
+            String edad = txtTabla.getValueAt(fila, 2).toString();
+            String telefono = txtTabla.getValueAt(fila, 3).toString();
+            String correo = txtTabla.getValueAt(fila, 4).toString();
+            String Puesto = txtTabla.getValueAt(fila, 5).toString();
+            String Salario =txtTabla.getValueAt(fila, 6).toString();
+
+            mensaje.append(" [Cédula:      ").append(cedula).append("]\n")
+             .append("[Nombre:      ").append(nombre).append("]\n")
+            .append("[Edad:        ").append(edad).append(" años]\n")
+           .append("[Teléfono:    ").append(telefono).append("]\n")
+            .append("[Correo:      ").append(correo).append("]\n")
+            .append("[Puesto:    ").append(Puesto).append("]\n\n")
+           .append("[Salario:    ").append(Salario).append("]\n\n");
+            
+        }
+
+ JOptionPane.showMessageDialog(this,
+     mensaje.toString(),
+       "Informe de Clientes",
+            JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButton2ActionPerformed
+                           
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+  int filaSeleccionada = txtTabla.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, 
+            "Seleccione un empleado para editar", 
+            "Aviso", 
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    } try {
+        String cedula = txtTabla.getValueAt(filaSeleccionada, 0).toString();
+        Empleado empleadoAEditar = null;
+        for (Empleado emp : Empleado.getEmpleados()) {
+            if (emp.getCedula().equals(cedula)) {
+                empleadoAEditar = emp;
+                break;
+            }
+        }
+
+        if (empleadoAEditar != null) {
+            P3_Actualizar3 dialogoActualizar = new P3_Actualizar3(null,true, cedula,empleadoAEditar.getTelefono(),empleadoAEditar.getCorreo(),empleadoAEditar.getPuesto()       
+            );
+            dialogoActualizar.setLocationRelativeTo(this); // Centrar el diálogo
+            dialogoActualizar.setVisible(true);
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                ActualizarTablaEmpleados();
+                if (filaSeleccionada < txtTabla.getRowCount()) {
+                    txtTabla.setRowSelectionInterval(filaSeleccionada, filaSeleccionada);
+                }
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "No se encontró el empleado seleccionado", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Error al intentar editar el empleado: " + e.getMessage(), 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace(); // Para debugging
+}
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        P3_Nuevo3 dialog = new P3_Nuevo3(null, true);
+        dialog.setVisible(true);
+         cargarEmpleadosEnTabla(Empleado.getEmpleados());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+         int filaSeleccionada = txtTabla.getSelectedRow();
+    if (filaSeleccionada != -1) {
+        String cedula = txtTabla.getValueAt(filaSeleccionada, 0).toString();
+        String nombre = txtTabla.getValueAt(filaSeleccionada, 1).toString();
+
+        int respuesta = JOptionPane.showConfirmDialog(this,
+            "¿Está seguro de que desea eliminar al empleado " + nombre + "?",
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+    try {
+      Empleado empleadoManager = new Empleado("", "", null, "", "", "", 0);
+        boolean eliminado = empleadoManager.eliminarEmpleado(cedula);
+
+         if (eliminado) {
+            cargarEmpleadosEnTabla(Empleado.getEmpleados());
+           jTextField1.setText("seleccionado:");
+           JOptionPane.showMessageDialog(this,
+                "Empleado eliminado correctamente",
+                   "Éxito",
+                  JOptionPane.INFORMATION_MESSAGE);
+            } else {
+             JOptionPane.showMessageDialog(this,
+                   "No se pudo eliminar el empleado",
+                   "Error",
+                   JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                // Si hay algún error, eliminar directamente de la tabla
+                DefaultTableModel modelo = (DefaultTableModel) txtTabla.getModel();
+                modelo.removeRow(filaSeleccionada);
+                jTextField1.setText("seleccionado:");
+                JOptionPane.showMessageDialog(this,
+                    "Empleado eliminado de la tabla correctamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(this,
+            "Seleccione un empleado para eliminar",
+            "Aviso",
+            JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtBuscarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusGained
+      if (txtBuscar.getText().equals(placeholderText)) {
+        txtBuscar.setText("");
+        txtBuscar.setForeground(java.awt.Color.BLACK);
+    }//GEN-LAST:event_txtBuscarFocusGained
+    }
+    private void txtBuscarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusLost
+         if (txtBuscar.getText().isEmpty()) {
+        txtBuscar.setText(placeholderText);
+        txtBuscar.setForeground(java.awt.Color.GRAY);
+    }//GEN-LAST:event_txtBuscarFocusLost
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTable txtTabla;
     // End of variables declaration//GEN-END:variables
 }
